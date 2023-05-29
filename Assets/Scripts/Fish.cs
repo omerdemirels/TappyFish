@@ -9,6 +9,7 @@ public class Fish : MonoBehaviour
     [SerializeField] private int _angle;
     [SerializeField] private int _maxAngle = 20;
     [SerializeField] private int _minAngle = -60;
+    public Score score;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -37,5 +38,12 @@ public class Fish : MonoBehaviour
             }
         }
         transform.rotation = Quaternion.Euler(0, 0, _angle);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            score.Scored();
+        }
     }
 }
