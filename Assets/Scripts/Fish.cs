@@ -12,12 +12,15 @@ public class Fish : MonoBehaviour
     public Sprite fishDied;
     SpriteRenderer sp;
     Animator anim;
+    public ObstacleSpawner obstacleSpawner;
+    [SerializeField] private AudioSource swim, hit, point;
 
 
     bool touchedGround;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _rb.gravityScale = 0;
         sp = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
 
@@ -37,8 +40,22 @@ public class Fish : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && GameManager.gameOver == false)
         {
+            swim.Play();
+            if (GameManager.gameStarted==false)
+            {
+                _rb.gravityScale = 4f;
+                _rb.velocity = Vector2.zero;
+                _rb.velocity = new Vector2(_rb.velocity.x, _speed);
+                obstacleSpawner.InstantiateObstacle();
+                gameManager.GameHasStarted();
+
+            }
+            else
+            {
             _rb.velocity = Vector2.zero;
             _rb.velocity = new Vector2(_rb.velocity.x, _speed);
+
+            }
         }
 
     }
@@ -69,10 +86,13 @@ public class Fish : MonoBehaviour
         if (collision.CompareTag("Obstacle"))
         {
             score.Scored();
+            point.Play();
         }
-        else if (collision.CompareTag("Column"))
+        else if (collision.CompareTag("Column") && GameManager.gameOver == false)
         {
-            //game over
+            gameManager.GameOver();
+            FishDieEffect();
+           
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -83,9 +103,14 @@ public class Fish : MonoBehaviour
             {
                 gameManager.GameOver();
                 GameOver();
+                FishDieEffect();
 
             }
         }
+    }
+    void FishDieEffect()
+    {
+        hit.Play();
     }
     void GameOver()
     {
