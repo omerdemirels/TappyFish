@@ -25,9 +25,9 @@ public class GameManager : MonoBehaviour
    public void GameOver()
     {
         gameOver = true;
-        gameScore = score.GetComponent<Score>().GetScore();
         gameOverPanel.SetActive(true);
         score.SetActive(false);
+        gameScore = score.GetComponent<Score>().GetScore();
 
 
     }

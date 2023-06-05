@@ -23,7 +23,7 @@ public class ObstacleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.gameOver == false && GameManager.gameStarted==true)
+        if (GameManager.gameOver == false && GameManager.gameStarted == true)
         {
             timer += Time.deltaTime;
             if (timer >= maxTime)
